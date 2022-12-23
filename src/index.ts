@@ -1,11 +1,11 @@
 // god i hate commonjs so much
 /* eslint-disable import/no-import-module-exports */
-import { v4 as uuidv4 } from 'uuid';
 import meowh from './meowh';
 import meowu from './meowu';
 import bodies from './utils/bodies';
 import config from './config';
 import logger from './utils/logger';
+import rand from './utils/rand';
 
 const meowm: { [meows: string]: { run: (creep: Creep) => void } } = {
   meowh,
@@ -13,7 +13,7 @@ const meowm: { [meows: string]: { run: (creep: Creep) => void } } = {
 };
 
 const init = () => {
-  Game.spawns[config.spawn].spawnCreep(bodies.meowh, `meowh-${uuidv4()}`);
+  Game.spawns[config.spawn].spawnCreep(bodies.meowh, `meowh-${rand.str()}`);
 };
 
 const loop = () => {
@@ -27,11 +27,11 @@ const loop = () => {
   if (Game.spawns[config.spawn].store[RESOURCE_ENERGY] > 200) {
     if (ameowh > 0 && ameowu < config.amount_meowu) {
       logger.info('spawning meowu');
-      Game.spawns[config.spawn].spawnCreep(bodies.meowu, `meowu-${uuidv4()}`);
+      Game.spawns[config.spawn].spawnCreep(bodies.meowu, `meowu-${rand.str()}`);
     }
     if (ameowh < config.amount_meowh) {
       logger.info('spawning meowh');
-      const res = Game.spawns[config.spawn].spawnCreep(bodies.meowh, `meowh-${uuidv4()}`);
+      Game.spawns[config.spawn].spawnCreep(bodies.meowh, `meowh-${rand.str()}`);
     }
   }
 };
