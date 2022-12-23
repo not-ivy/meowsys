@@ -1,1 +1,3 @@
-console.log("Hello via Bun!");
+setInterval(() => {
+  console.log(Game.time)
+}, 1000);

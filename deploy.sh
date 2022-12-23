@@ -2,7 +2,11 @@
 
 source .env
 
-data="$(cat $DIST)"
+rm -rf dist && mkdir dist
+
+swc src/index.ts -o dist/index.js
+
+data="$(cat dist/index.js)"
 
 data="{\"branch\":\"default\",\"modules\":{\"main\": \"$data\"}}"
 
@@ -12,4 +16,4 @@ curl\
  --user "$EMAIL:$PASSWD" \
  -H "Content-Type: application/json; charset=utf-8" \
  -d "$data" \
- "$HOST:$POST/api/user/code"
+ "https://$HOST:$POST/api/user/code"
