@@ -1,1 +1,8 @@
-{"dependencies":{"@types/screeps": "^3.3.0"}}
+{
+  "devDependencies": {
+    "@swc/core": "^1.3.24",
+    "@types/node": "^18.11.17",
+    "@types/screeps": "^3.3.0",
+    "zx": "^7.1.1"
+  }
+}
