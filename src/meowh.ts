@@ -1,11 +1,4 @@
-import config from './config';
 import logger from './utils/logger';
-
-const isIdle = (creep: Creep) => {
-  const creepCarryCapacity = creep.store.getFreeCapacity();
-  const spawnEnergyCapacity = Game.spawns[config.spawn].store[RESOURCE_ENERGY];
-  return creepCarryCapacity === 0 && spawnEnergyCapacity === 300;
-};
 
 const harvest = (creep: Creep) => {
   const source = creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES));
@@ -21,11 +14,7 @@ const transfer = (creep: Creep) => {
   const controller = creep.room.controller;
   if (!controller) return logger.error(`${creep.name} failed to find controller`);
 
-  if (isIdle(creep)) {
-    if (creep.transfer(controller, RESOURCE_ENERGY, 50) === ERR_NOT_IN_RANGE) {
-      creep.moveTo(controller);
-    }
-  } else if (creep.transfer(spawn, RESOURCE_ENERGY, 50) === ERR_NOT_IN_RANGE) {
+  if (creep.transfer(spawn, RESOURCE_ENERGY, 50) === ERR_NOT_IN_RANGE) {
     creep.moveTo(spawn);
   }
 };
@@ -34,7 +23,8 @@ export default {
   run: (creep: Creep) => {
     if (creep.store.getFreeCapacity() > 0) {
       harvest(creep);
+    } else {
+      transfer(creep);
     }
-    transfer(creep);
   },
 };

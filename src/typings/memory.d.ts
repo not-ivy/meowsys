@@ -5,7 +5,6 @@ declare global {
 
   interface CreepMemory {
     // Creep memory
-    idle: boolean;
   }
 }
 

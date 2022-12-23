@@ -3,28 +3,14 @@ import logger from './utils/logger';
 export default {
   run: (creep: Creep) => {
     if (creep.store.getFreeCapacity() > 0) {
-      harvest(creep);
+      var sources = creep.room.find(FIND_SOURCES);
+      if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
+        creep.moveTo(sources[0]);
+      }
     } else {
-      transfer(creep);
+      if (creep.upgradeController(creep.room.controller!) === ERR_NOT_IN_RANGE) {
+        creep.moveTo(creep.room.controller!);
+      }
     }
   },
-};
-
-const harvest = (creep: Creep) => {
-  const path = creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES));
-  if (!path) return logger.error('no path found, aborting');
-  const tryHarvest = creep.harvest(path);
-  if (tryHarvest === ERR_NOT_IN_RANGE) {
-    return creep.moveTo(path);
-  }
-};
-
-const transfer = (creep: Creep) => {
-  if (!creep.room.controller) {
-    return;
-  }
-  const tryTransfer = creep.transfer(creep.room.controller, RESOURCE_ENERGY);
-  if (tryTransfer === ERR_NOT_IN_RANGE) {
-    creep.moveTo(creep.room.controller);
-  }
 };
