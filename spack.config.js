@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { config } = require('@swc/core/spack');
 
 module.exports = config({
@@ -9,5 +10,8 @@ module.exports = config({
   },
   options: {
     minify: true,
+    jsc: {
+      target: 'es2016',
+    },
   },
 });
