@@ -1,11 +1,11 @@
 export default {
   info: (message: string) => {
-    console.log(`%c[${Date.now()}] %c[info]`, 'color: #555', 'color: #0ff', message);
+    console.log(`<font color="#555">[${Date.now()}]</font> <font color="#0ff">[info]</font>`, message);
   },
   warn: (message: string) => {
-    console.log(`%c[${Date.now()}] %c[warn]`, 'color: #555', 'color: #ff0', message);
+    console.log(`<font color="#555">[${Date.now()}]</font> <font color="#ff0">[warn]</font>`, message);
   },
   error: (message: string) => {
-    console.log(`%c[${Date.now()}] %c[error]`, 'color: #555', 'color: #f00', message);
+    console.log(`<font color="#555">[${Date.now()}]</font> <font color="#f00">[error]</font>`, message);
   },
 };

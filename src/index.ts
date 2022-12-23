@@ -19,7 +19,7 @@ const loop = () => {
   const ameowu = Object.keys(Game.creeps).filter((name) => name.slice(0, 5) === 'meowu').length;
 
   Object.keys(Game.creeps).forEach((name) => {
-    meowm[name.slice(0, 5)].run(Game.creeps[name]); // why use memory :tro:
+    meowm[name.slice(0, 5)].run(Game.creeps[name]);
   });
 
   if (Game.spawns[config.spawn].store[RESOURCE_ENERGY] > 200) {
