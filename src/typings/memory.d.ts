@@ -5,6 +5,8 @@ declare global {
 
   interface CreepMemory {
     // Creep memory
+    building: boolean;
+    harvesting: boolean;
   }
 }
 

@@ -1,30 +1,28 @@
 import logger from './utils/logger';
 
-const harvest = (creep: Creep) => {
-  const source = creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES));
-  if (source && creep.harvest(source) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(source);
-  }
-};
-
-const transfer = (creep: Creep) => {
-  const spawn = creep.pos.findClosestByPath(creep.room.find(FIND_MY_SPAWNS));
-  if (!spawn) return logger.error(`${creep.name} failed to find spawn`);
-
-  const controller = creep.room.controller;
-  if (!controller) return logger.error(`${creep.name} failed to find controller`);
-
-  if (creep.transfer(spawn, RESOURCE_ENERGY, 50) === ERR_NOT_IN_RANGE) {
-    creep.moveTo(spawn);
-  }
-};
-
 export default {
   run: (creep: Creep) => {
-    if (creep.store.getFreeCapacity() > 0) {
-      harvest(creep);
+    if (creep.memory.harvesting && creep.store.getFreeCapacity() === 0) {
+      creep.memory.harvesting = false;
+    }
+    if (!creep.memory.harvesting && creep.store[RESOURCE_ENERGY] === 0) {
+      creep.memory.harvesting = true;
+    }
+
+    if (creep.memory.harvesting) {
+      const source = creep.pos.findClosestByPath(creep.room.find(FIND_SOURCES));
+      if (source) {
+        const result = creep.harvest(source);
+        if (result === ERR_NOT_IN_RANGE) {
+          creep.moveTo(source, { visualizePathStyle: { stroke: '#9bc' } });
+        } else if (result !== OK) {
+          logger.error(`Error harvesting energy from source: ${result}`);
+        }
+      }
     } else {
-      transfer(creep);
+      if (creep.transfer(creep.room.controller!, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+        creep.moveTo(creep.room.controller!, { visualizePathStyle: { stroke: '#9bc' } });
+      }
     }
   },
 };

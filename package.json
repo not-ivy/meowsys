@@ -6,13 +6,15 @@
     "@types/screeps": "^3.3.0",
     "rome": "^11.0.0",
     "typescript": "^4.9.4",
+    "watch": "^1.0.2",
     "zx": "^7.1.1"
   },
   "scripts": {
     "build": "spack",
     "deploy": "yarn build && env $(cat .env | xargs) zx deploy.mjs",
     "lint": "rome check src/",
-    "fmt": "rome format src/"
+    "fmt": "rome format src/",
+    "dev": "watch 'yarn deploy' src/"
   },
   "license": "WTFPL",
   "dependencies": {

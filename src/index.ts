@@ -4,10 +4,12 @@ import bodies from './utils/bodies';
 import config from './config';
 import logger from './utils/logger';
 import rand from './utils/rand';
+import meowb from './meowb';
 
 const meowm: { [meows: string]: { run: (creep: Creep) => void } } = {
   meowh,
   meowu,
+  meowb,
 };
 
 const init = () => {
@@ -15,21 +17,66 @@ const init = () => {
 };
 
 const loop = () => {
-  const ameowh = Object.keys(Game.creeps).filter((name) => name.slice(0, 5) === 'meowh').length;
-  const ameowu = Object.keys(Game.creeps).filter((name) => name.slice(0, 5) === 'meowu').length;
+  spawnCreeps();
+  runCreeps();
+  buildExtensions();
+};
 
+const spawnCreeps = () => {
+  const amounts = new Map<keyof typeof meowm, number>();
+  const controller = Game.spawns[config.spawn].room.controller;
+
+  if (!controller) {
+    logger.error('no controller present');
+    return;
+  }
+
+  Object.keys(meowm).forEach((name) => {
+    amounts.set(name, Object.keys(Game.creeps).filter((creep) => creep.slice(0, 5) === name).length);
+  });
+
+  if (Game.spawns[config.spawn].room.energyAvailable > 200) {
+    amounts.forEach((amount, name) => {
+      if (amount < config[`amount_${name}`]) {
+        const result = Game.spawns[config.spawn].spawnCreep(bodies[name], `${name}-${rand.str()}`);
+        if (result === OK) {
+          logger.info(`spawning ${name}`);
+        } else if (result === ERR_NAME_EXISTS) {
+          logger.error(`${name} already exists`);
+        } else {
+          logger.error(`spawnCreep failed with ${result}`);
+        }
+      }
+    });
+  }
+};
+
+const runCreeps = () => {
   Object.keys(Game.creeps).forEach((name) => {
     meowm[name.slice(0, 5)].run(Game.creeps[name]);
   });
+};
 
-  if (Game.spawns[config.spawn].store[RESOURCE_ENERGY] > 200) {
-    if (ameowh > 0 && ameowu < config.amount_meowu) {
-      logger.info('spawning meowu');
-      Game.spawns[config.spawn].spawnCreep(bodies.meowu, `meowu-${rand.str()}`);
-    }
-    if (ameowh < config.amount_meowh) {
-      logger.info('spawning meowh');
-      Game.spawns[config.spawn].spawnCreep(bodies.meowh, `meowh-${rand.str()}`);
+const buildExtensions = () => {
+  const controller = Game.spawns[config.spawn].room.controller;
+
+  if (!controller) {
+    logger.error('no controller present');
+    return;
+  }
+
+  if (controller.level >= 2) {
+    const extensions = Game.spawns[config.spawn].room.find(FIND_MY_STRUCTURES, {
+      filter: { structureType: STRUCTURE_EXTENSION },
+    });
+    if (extensions.length < 5) {
+      const x = Game.spawns[config.spawn].pos.x;
+      const y = Game.spawns[config.spawn].pos.y;
+      Game.spawns[config.spawn].room.createConstructionSite(x, y - 1, STRUCTURE_EXTENSION);
+      Game.spawns[config.spawn].room.createConstructionSite(x + 1, y, STRUCTURE_EXTENSION);
+      Game.spawns[config.spawn].room.createConstructionSite(x, y + 1, STRUCTURE_EXTENSION);
+      Game.spawns[config.spawn].room.createConstructionSite(x - 1, y, STRUCTURE_EXTENSION);
+      Game.spawns[config.spawn].room.createConstructionSite(x - 1, y - 1, STRUCTURE_EXTENSION);
     }
   }
 };
