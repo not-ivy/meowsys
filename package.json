@@ -1,0 +1,8 @@
+{
+  "name": "aurora",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "bun-types": "^0.3.0"
+  }
+}
