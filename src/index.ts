@@ -1,11 +1,17 @@
+import meowh from './meowh';
+
 const init = () => {
-  const spawn = Game.spawns["meow"];
+  const spawn = Game.spawns['meow'];
   const body = [WORK, CARRY, MOVE];
-  const name = "meowh1";
+  const name = 'meowh1';
   spawn.spawnCreep(body, name);
 };
 
-export const loop = () => {};
+const loop = () => {
+  Object.keys(Game.creeps).forEach((name) => {
+    name.startsWith('meowh') && meowh.run(Game.creeps[name]);
+  });
+};
 
 Object.keys(Game.creeps).length === 0 && init();
 
