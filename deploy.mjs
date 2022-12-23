@@ -8,6 +8,7 @@ const data = {
   branch: 'default',
   modules: {
     main: fs.readFileSync(`${__dirname}/dist/index.js`, 'utf-8'),
+    sourcemap: fs.readFileSync(`${__dirname}/dist/index.js.map`, 'utf-8'),
   },
 };
 
