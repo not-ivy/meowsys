@@ -4,7 +4,6 @@ import bodies from './utils/bodies';
 import config from './config';
 import logger from './utils/logger';
 import rand from './utils/rand';
-import { generateStackTrace } from './utils/sourcemap';
 
 const meowm: { [meows: string]: { run: (creep: Creep) => void } } = {
   meowh,
@@ -19,13 +18,9 @@ const loop = () => {
   const ameowh = Object.keys(Game.creeps).filter((name) => name.slice(0, 5) === 'meowh').length;
   const ameowu = Object.keys(Game.creeps).filter((name) => name.slice(0, 5) === 'meowu').length;
 
-  try {
-    Object.keys(Game.creeps).forEach((name) => {
-      meowm[name.slice(0, 5)].run(Game.creeps[name]);
-    });
-  } catch (e) {
-    logger.error(generateStackTrace(e as Error));
-  }
+  Object.keys(Game.creeps).forEach((name) => {
+    meowm[name.slice(0, 5)].run(Game.creeps[name]);
+  });
 
   if (Game.spawns[config.spawn].store[RESOURCE_ENERGY] > 200) {
     if (ameowh > 0 && ameowu < config.amount_meowu) {
