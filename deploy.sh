@@ -2,7 +2,7 @@
 
 source .env
 
-data="$(cat $PATH)"
+data="$(cat $DIST)"
 
 data="{\"branch\":\"default\",\"modules\":{\"main\": \"$data\"}}"
 
