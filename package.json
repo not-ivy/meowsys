@@ -21,8 +21,5 @@
     "lint": "eslint src/**/*.ts",
     "fmt": "prettier --write src/**/*.ts"
   },
-  "license": "WTFPL",
-  "dependencies": {
-    "uuid": "^9.0.0"
-  }
+  "license": "WTFPL"
 }
