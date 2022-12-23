@@ -16,4 +16,6 @@ curl\
  --user "$EMAIL:$PASSWD" \
  -H "Content-Type: application/json; charset=utf-8" \
  -d "$data" \
- "https://$HOST:$POST/api/user/code"
+ "http://$HOST:$POST/api/user/code"
+
+echo "deployed"
