@@ -1,8 +1,13 @@
 {
   "devDependencies": {
+    "@swc/cli": "^0.1.57",
     "@swc/core": "^1.3.24",
     "@types/node": "^18.11.17",
     "@types/screeps": "^3.3.0",
     "zx": "^7.1.1"
+  },
+  "scripts": {
+    "build": "spack",
+    "deploy": "env $(cat .env | xargs) zx deploy.mjs"
   }
 }
