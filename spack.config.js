@@ -8,13 +8,6 @@ module.exports = config({
     path: __dirname + '/dist',
   },
   options: {
-    minify: false,
-    module: {
-      type: 'commonjs',
-      strict: true,
-      strictMode: true,
-      lazy: true,
-      importInterop: 'swc',
-    },
+    minify: true,
   },
 });
