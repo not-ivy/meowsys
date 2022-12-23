@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export default {
   info: (message: string) => {
     console.log('%c[meowsys]', 'color: #555', '%[info]', 'color: #fff', message);

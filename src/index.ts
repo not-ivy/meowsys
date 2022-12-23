@@ -1,5 +1,3 @@
-// god i hate commonjs so much
-/* eslint-disable import/no-import-module-exports */
 import meowh from './meowh';
 import meowu from './meowu';
 import bodies from './utils/bodies';

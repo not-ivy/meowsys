@@ -1,5 +1,4 @@
 #!/usr/bin/env zx
-/* eslint-disable */
 
 import 'zx/globals';
 
