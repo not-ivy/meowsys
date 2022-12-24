@@ -1,5 +1,5 @@
 export default {
-  spawn: 'meow',
+  spawn: 'Spawn1',
   amounts: {
     meowh: 3,
     meowu: 5,

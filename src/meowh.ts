@@ -14,10 +14,6 @@ export default {
       const tryHarvest = creep.harvest(source);
       if (tryHarvest === ERR_NOT_IN_RANGE) {
         creep.moveTo(source, { visualizePathStyle: { stroke: '#68f' } });
-        const tryBuild = creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
-        if (!creep.spawning && config.warn_filter(tryBuild)) {
-          logger.warn(`${creep.name} building failed with ${tryBuild}`);
-        }
       } else if (!creep.spawning && config.warn_filter(tryHarvest)) {
         logger.warn(`${creep.name} harvesting failed with ${tryHarvest}`);
       }
