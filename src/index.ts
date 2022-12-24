@@ -17,9 +17,20 @@ const init = () => {
 };
 
 const loop = () => {
+  freeMemory();
   spawnCreeps();
   runCreeps();
   buildExtensions();
+};
+
+const freeMemory = () => {
+  Object.keys(Memory.creeps)
+    .filter((name) => !Game.creeps[name])
+    .map((name) => {
+      // rome-ignore lint/performance/noDelete: could not assign to undefined
+      delete Memory.creeps[name];
+      logger.info(`deleting ${name}`);
+    });
 };
 
 const spawnCreeps = () => {
@@ -37,7 +48,7 @@ const spawnCreeps = () => {
 
   if (Game.spawns[config.spawn].room.energyAvailable > 200) {
     amounts.forEach((amount, name) => {
-      if (amount < config[`amount_${name}`]) {
+      if (amount < config.amounts[`${name}`]) {
         const result = Game.spawns[config.spawn].spawnCreep(bodies[name], `${name}-${rand.str()}`);
         if (result === OK) {
           logger.info(`spawning ${name}`);
