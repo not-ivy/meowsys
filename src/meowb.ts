@@ -9,18 +9,22 @@ export default {
     if (creep.memory.building) {
       // building or upgrading
       let target: ConstructionSite | AnyStructure | null;
-      target =
-        creep.pos.findClosestByPath(creep.room.find(FIND_CONSTRUCTION_SITES)) ??
-        creep.pos.findClosestByPath(
-          creep.room.find(FIND_STRUCTURES, {
-            filter: (structure) => {
-              return (
-                (structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN) &&
-                structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-              );
-            },
-          })
-        );
+      if (Object.keys(Game.creeps).filter((name) => name.startsWith('meowh')).length === 0) {
+        target = creep.pos.findClosestByPath(creep.room.find(FIND_MY_SPAWNS));
+      } else {
+        target =
+          creep.pos.findClosestByPath(creep.room.find(FIND_CONSTRUCTION_SITES)) ??
+          creep.pos.findClosestByPath(
+            creep.room.find(FIND_STRUCTURES, {
+              filter: (structure) => {
+                return (
+                  (structure.structureType === STRUCTURE_EXTENSION || structure.structureType === STRUCTURE_SPAWN) &&
+                  structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                );
+              },
+            })
+          );
+      }
       if (!target) return logger.warn(`${creep.name} failed to find target with ${target}`);
 
       const tryAction =
