@@ -13,7 +13,7 @@ export default {
       const tryHarvest = creep.harvest(source);
       if (tryHarvest === ERR_NOT_IN_RANGE) {
         creep.moveTo(source, { visualizePathStyle: { stroke: '#68f' } });
-      } else if (tryHarvest !== OK) {
+      } else if (tryHarvest !== OK && !creep.spawning) {
         logger.warn(`${creep.name} harvesting failed with ${tryHarvest}`);
       }
     } else {
@@ -24,7 +24,7 @@ export default {
       const tryTransfer = creep.transfer(spawn, RESOURCE_ENERGY);
       if (tryTransfer === ERR_NOT_IN_RANGE) {
         creep.moveTo(spawn, { visualizePathStyle: { stroke: '#68f' } });
-      } else if (tryTransfer !== OK) {
+      } else if (tryTransfer !== OK && tryTransfer !== ERR_FULL) {
         logger.warn(`${creep.name} transferring failed with ${tryTransfer}`);
       }
     }
