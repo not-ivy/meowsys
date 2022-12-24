@@ -1,3 +1,4 @@
+import config from './config';
 import logger from './utils/logger';
 
 export default {
@@ -13,7 +14,11 @@ export default {
       const tryHarvest = creep.harvest(source);
       if (tryHarvest === ERR_NOT_IN_RANGE) {
         creep.moveTo(source, { visualizePathStyle: { stroke: '#68f' } });
-      } else if (tryHarvest !== OK && !creep.spawning && tryHarvest !== ERR_NOT_ENOUGH_RESOURCES) {
+        const tryBuild = creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
+        if (!creep.spawning && config.warn_filter(tryBuild)) {
+          logger.warn(`${creep.name} building failed with ${tryBuild}`);
+        }
+      } else if (!creep.spawning && config.warn_filter(tryHarvest)) {
         logger.warn(`${creep.name} harvesting failed with ${tryHarvest}`);
       }
     } else {
@@ -24,7 +29,7 @@ export default {
       const tryTransfer = creep.transfer(spawn, RESOURCE_ENERGY);
       if (tryTransfer === ERR_NOT_IN_RANGE) {
         creep.moveTo(spawn, { visualizePathStyle: { stroke: '#68f' } });
-      } else if (tryTransfer !== OK && tryTransfer !== ERR_FULL && !creep.spawning) {
+      } else if (!creep.spawning && config.warn_filter(tryTransfer)) {
         logger.warn(`${creep.name} transferring failed with ${tryTransfer}`);
       }
     }
