@@ -13,7 +13,7 @@
     "build": "spack",
     "deploy": "yarn build && env $(cat .env | xargs) zx deploy.mjs",
     "lint": "rome check src/",
-    "fmt": "rome format src/",
+    "fmt": "rome format src/ --write",
     "dev": "watch 'yarn deploy' src/"
   },
   "license": "WTFPL",
